@@ -1,47 +1,33 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class PlayerHealth : MonoBehaviour
+public class BarraDeVida : MonoBehaviour
 {
-    public int maxLives = 3;
-    private int currentLives;
-    public string Lost; // Nombre de la escena a cargar cuando el jugador muera
+    private Slider slider;
+    private Animator animator;
 
-    void Start()
+    private void Start()
     {
-        currentLives = maxLives;
+        slider = GetComponent<Slider>();
+        animator = GetComponent<Animator>();    
     }
 
-    public void TakeDamage(int damage)
+    public void CambiarVidaMaxima(float vidaMaxima)
     {
-        currentLives -= damage;
-
-        if (currentLives <= 0)
-        {
-            Die();
-        }
+        slider.maxValue = vidaMaxima;
     }
 
-
-    void Die()
+    public void CambiarVidaActual(float cantidadVida)
     {
-        Debug.Log("Player has died.");
-        // Cargar la escena de Game Over
-        SceneManager.LoadScene(Lost);
+        slider.value = cantidadVida;
+        animator.SetTrigger("Golpe");
     }
 
-    public void GainLife(int life)
+    public void InicializarBarraDeVida(float cantidadVida)
     {
-        currentLives += life;
-        if (currentLives > maxLives)
-        {
-            currentLives = maxLives;
-        }
-    }
-
-    public bool IsDead()
-    {
-        return currentLives <= 0;
+        CambiarVidaMaxima(cantidadVida);
+        CambiarVidaActual(cantidadVida);
     }
 }
 
